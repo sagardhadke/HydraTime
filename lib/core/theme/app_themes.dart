@@ -4,6 +4,7 @@ import 'package:hydra_time/core/constants/app_colors.dart';
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: 'Poppins',
+  primaryColor: Color(0XFF00B8D4),
   scaffoldBackgroundColor: AppColors.scaffoldDark,
   textTheme: const TextTheme(
     bodyLarge: TextStyle(fontWeight: FontWeight.w400, fontSize: 16), // Regular
