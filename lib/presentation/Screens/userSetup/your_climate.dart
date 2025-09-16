@@ -1,20 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
 
-class YourActivity extends StatefulWidget {
-  const YourActivity({super.key});
+class YourClimate extends StatefulWidget {
+  const YourClimate({super.key});
 
   @override
-  State<YourActivity> createState() => _YourActivityState();
+  State<YourClimate> createState() => _YourClimateState();
 }
 
-class _YourActivityState extends State<YourActivity> {
+class _YourClimateState extends State<YourClimate> {
   final log = LoggerService();
-  int? selectedAct;
+  int? selectedClimate;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class _YourActivityState extends State<YourActivity> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Your Activity Level",
+                "Your Climate",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: AppColors.white,
@@ -36,7 +34,7 @@ class _YourActivityState extends State<YourActivity> {
                 ),
               ),
               Text(
-                "Select your activity level to receive a personalized hydration plan.",
+                "Select the climate you live in to help us personalize your hydration plan.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -46,7 +44,7 @@ class _YourActivityState extends State<YourActivity> {
               ),
               SizedBox(height: 5),
               ListView.builder(
-                itemCount: AppData.yourActivityList.length,
+                itemCount: AppData.yourClimateList.length,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
@@ -55,9 +53,9 @@ class _YourActivityState extends State<YourActivity> {
                     child: InkWell(
                       onTap: () {
                         setState(() {
-                          selectedAct = index;
+                          selectedClimate = index;
                           log.i(
-                            "Selected Activities is :${AppData.yourActivityList[index]['label']}",
+                            "Selected Activities is :${AppData.yourClimateList[index]['label']}",
                           );
                         });
                       },
@@ -68,7 +66,7 @@ class _YourActivityState extends State<YourActivity> {
                           color: AppColors.grey40,
                           borderRadius: BorderRadius.circular(15),
                           border: BoxBorder.all(
-                            color: selectedAct == index
+                            color: selectedClimate == index
                                 ? AppColors.primaryColor
                                 : AppColors.grey80,
                             width: 2,
@@ -76,21 +74,21 @@ class _YourActivityState extends State<YourActivity> {
                         ),
                         child: ListTile(
                           title: Text(
-                            AppData.yourActivityList[index]['label'],
+                            AppData.yourClimateList[index]['label'],
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                           subtitle: Text(
-                            AppData.yourActivityList[index]['desc'],
+                            AppData.yourClimateList[index]['desc'],
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                           leading: Image.asset(
-                            AppData.yourActivityList[index]['img'],
+                            AppData.yourClimateList[index]['img'],
                             height: 32,
                             width: 32,
                           ),
@@ -105,11 +103,11 @@ class _YourActivityState extends State<YourActivity> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (selectedAct == null) {
+                    if (selectedClimate == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            "Please Select Your Activity Level",
+                            "Please Select Your Climate",
                             style: TextStyle(color: AppColors.white),
                           ),
                           backgroundColor: Colors.red,
@@ -117,9 +115,7 @@ class _YourActivityState extends State<YourActivity> {
                           duration: Duration(seconds: 1),
                         ),
                       );
-                    } else {
-                      Navigator.pushNamed(context, AppRoutes.yourClimate);
-                    }
+                    } else {}
                   },
                   child: Text("Next"),
                 ),

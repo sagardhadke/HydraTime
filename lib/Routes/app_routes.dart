@@ -5,6 +5,7 @@ import 'package:hydra_time/presentation/Screens/splash_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/personal_info_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/your_activity.dart';
+import 'package:hydra_time/presentation/Screens/userSetup/your_climate.dart';
 
 class AppRoutes {
   static const String home = '/home';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String personalInfo = '/personalInfo';
   static const String dailyRoutine = '/dailyRoutine';
   static const String yourActivity = '/yourActivity'; 
+  static const String yourClimate = '/yourClimate';
 
   static Map<String, WidgetBuilder> mRoutes = {
     AppRoutes.splash: (_) => MySplashScreen(),
@@ -21,6 +23,7 @@ class AppRoutes {
     AppRoutes.dashBoard : (_) => MyDashBoard(),
     AppRoutes.personalInfo : (_) => PersonalInfo(),
     AppRoutes.dailyRoutine : (_) => DailyRoutine(),
-    AppRoutes.yourActivity : (_) => YourActivity()
+    AppRoutes.yourActivity : (_) => YourActivity(),
+    AppRoutes.yourClimate : (_) => YourClimate(),
   };
 }
