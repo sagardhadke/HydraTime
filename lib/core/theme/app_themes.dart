@@ -15,6 +15,7 @@ final ThemeData darkTheme = ThemeData(
     ), // SemiBold
     titleLarge: TextStyle(fontWeight: FontWeight.w700, fontSize: 20), // Bold
   ),
+  appBarTheme: AppBarTheme(backgroundColor: AppColors.scaffoldDark),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.primaryColor,
