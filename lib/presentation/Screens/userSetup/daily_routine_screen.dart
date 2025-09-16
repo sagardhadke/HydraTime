@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:intl/intl.dart';
@@ -218,7 +219,11 @@ class _DailyRoutineState extends State<DailyRoutine> {
               SizedBox(height: 15),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: () {}, child: Text("Next")),
+                child: ElevatedButton(
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.yourActivity),
+                  child: Text("Next"),
+                ),
               ),
             ],
           ),
