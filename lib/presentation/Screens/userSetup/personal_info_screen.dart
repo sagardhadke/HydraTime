@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
@@ -33,6 +34,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               spacing: 10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 5),
                 Text(
                   "Personal Info",
                   style: TextStyle(
@@ -222,10 +224,11 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             ),
                             backgroundColor: Colors.red,
                             showCloseIcon: true,
+                            duration: Duration(seconds: 1),
                           ),
                         );
-                      }else{
-                        
+                      } else {
+                        Navigator.pushNamed(context, AppRoutes.dailyRoutine);
                       }
                     },
                     child: Text("Next"),
