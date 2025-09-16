@@ -51,7 +51,7 @@ class _MyOnBoardingScreenState extends State<MyOnBoardingScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(PrefsKeys.onboardingComplete, true);
     debugPrint("User onBoarding Successfully");
-    Navigator.pushReplacementNamed(context, AppRoutes.dashBoard);
+    Navigator.pushReplacementNamed(context, AppRoutes.personalInfo);
   }
 
   void onSkip() {

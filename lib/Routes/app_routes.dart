@@ -5,6 +5,7 @@ import 'package:hydra_time/presentation/Screens/splash_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/personal_info_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/preparing_your_plan.dart';
+import 'package:hydra_time/presentation/Screens/userSetup/water_suggestion.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/your_activity.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/your_climate.dart';
 
@@ -29,5 +30,6 @@ class AppRoutes {
     AppRoutes.yourActivity: (_) => YourActivity(),
     AppRoutes.yourClimate: (_) => YourClimate(),
     AppRoutes.preparingYourPlan: (_) => PreparingYourPlan(),
+    AppRoutes.waterSuggestion : (_) => WaterSuggestion(),
   };
 }
