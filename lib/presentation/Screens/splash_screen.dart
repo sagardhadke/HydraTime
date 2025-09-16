@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hydra_time/Routes/app_routes.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
@@ -8,10 +11,23 @@ class MySplashScreen extends StatefulWidget {
 }
 
 class _MySplashScreenState extends State<MySplashScreen> {
+  bool userOnBoard = false;
 
   @override
   void initState() {
     super.initState();
+    getUserOnBoardDetails();
+  }
+
+  Future<void> getUserOnBoardDetails() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userOnBoard = prefs.getBool(PrefsKeys.onboardingComplete) ?? false;
+    debugPrint("User onBoard Status $userOnBoard");
+    await Future.delayed(Duration(seconds: 2));
+    Navigator.pushReplacementNamed(
+      context,
+      userOnBoard ? AppRoutes.dashBoard : AppRoutes.onBoarding,
+    );
   }
 
   @override
