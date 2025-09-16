@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoutes.onBoarding,
+      initialRoute: AppRoutes.personalInfo,
       routes: AppRoutes.mRoutes,
       debugShowCheckedModeBanner: false,
       theme: darkTheme,

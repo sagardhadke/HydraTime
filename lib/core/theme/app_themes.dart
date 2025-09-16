@@ -17,7 +17,13 @@ final ThemeData darkTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: Colors.black,
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
+        color: Colors.black,
+      ),
     ),
   ),
 );
