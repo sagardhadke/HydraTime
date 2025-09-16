@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
@@ -115,7 +116,9 @@ class _YourClimateState extends State<YourClimate> {
                           duration: Duration(seconds: 1),
                         ),
                       );
-                    } else {}
+                    } else {
+                      Navigator.pushNamed(context, AppRoutes.preparingYourPlan);
+                    }
                   },
                   child: Text("Next"),
                 ),

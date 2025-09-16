@@ -4,6 +4,7 @@ import 'package:hydra_time/presentation/Screens/dashboard.dart';
 import 'package:hydra_time/presentation/Screens/splash_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/personal_info_screen.dart';
+import 'package:hydra_time/presentation/Screens/userSetup/preparing_your_plan.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/your_activity.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/your_climate.dart';
 
@@ -14,16 +15,19 @@ class AppRoutes {
   static const String dashBoard = '/dashBoard';
   static const String personalInfo = '/personalInfo';
   static const String dailyRoutine = '/dailyRoutine';
-  static const String yourActivity = '/yourActivity'; 
+  static const String yourActivity = '/yourActivity';
   static const String yourClimate = '/yourClimate';
+  static const String preparingYourPlan = '/preparingYourPlan';
+  static const String waterSuggestion = '/waterSuggestion';
 
   static Map<String, WidgetBuilder> mRoutes = {
     AppRoutes.splash: (_) => MySplashScreen(),
-    AppRoutes.onBoarding : (_) => MyOnBoardingScreen(),
-    AppRoutes.dashBoard : (_) => MyDashBoard(),
-    AppRoutes.personalInfo : (_) => PersonalInfo(),
-    AppRoutes.dailyRoutine : (_) => DailyRoutine(),
-    AppRoutes.yourActivity : (_) => YourActivity(),
-    AppRoutes.yourClimate : (_) => YourClimate(),
+    AppRoutes.onBoarding: (_) => MyOnBoardingScreen(),
+    AppRoutes.dashBoard: (_) => MyDashBoard(),
+    AppRoutes.personalInfo: (_) => PersonalInfo(),
+    AppRoutes.dailyRoutine: (_) => DailyRoutine(),
+    AppRoutes.yourActivity: (_) => YourActivity(),
+    AppRoutes.yourClimate: (_) => YourClimate(),
+    AppRoutes.preparingYourPlan: (_) => PreparingYourPlan(),
   };
 }
