@@ -27,4 +27,14 @@ final ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
+
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Color(0XFF282727),
+    selectedItemColor: AppColors.primaryColor,
+    unselectedItemColor: Colors.grey,
+    showUnselectedLabels: true,
+    selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+    unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+    elevation: 8,
+  ),
 );
