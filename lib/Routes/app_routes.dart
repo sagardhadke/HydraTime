@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hydra_time/presentation/Screens/Onboarding/onBoarding.dart';
+import 'package:hydra_time/presentation/Screens/about_us.dart';
 import 'package:hydra_time/presentation/Screens/dashboard.dart';
+import 'package:hydra_time/presentation/Screens/home_screen.dart';
+import 'package:hydra_time/presentation/Screens/reminder_screen.dart';
+import 'package:hydra_time/presentation/Screens/settings_screen.dart';
 import 'package:hydra_time/presentation/Screens/splash_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/personal_info_screen.dart';
@@ -20,6 +24,9 @@ class AppRoutes {
   static const String yourClimate = '/yourClimate';
   static const String preparingYourPlan = '/preparingYourPlan';
   static const String waterSuggestion = '/waterSuggestion';
+  static const String reminder = '/reminder';
+  static const String settings = '/settings';
+  static const String aboutUs = '/aboutUs';
 
   static Map<String, WidgetBuilder> mRoutes = {
     AppRoutes.splash: (_) => MySplashScreen(),
@@ -31,5 +38,9 @@ class AppRoutes {
     AppRoutes.yourClimate: (_) => YourClimate(),
     AppRoutes.preparingYourPlan: (_) => PreparingYourPlan(),
     AppRoutes.waterSuggestion : (_) => WaterSuggestion(),
+    AppRoutes.home : (_) => MyHomeScreen(),
+    AppRoutes.reminder : (_) => MyReminderScreen(),
+    AppRoutes.settings : (_) => MySettingsScreen(),
+    AppRoutes.aboutUs : (_) => AboutUsScreen(),
   };
 }
