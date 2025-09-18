@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wave_progress_indicator/wave_progress_indicator.dart';
 
 class MyHomeScreen extends StatefulWidget {
@@ -41,6 +43,23 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       });
     } catch (e) {
       log.e("Error in Add Water $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAndResetDailyProgress();
+  }
+
+  Future<void> _checkAndResetDailyProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lastResetDate = prefs.getString(PrefsKeys.lastResetDate) ?? '';
+    final today = DateTime.now();
+    final todayString = "${today.year}-${today.month}-${today.day}";
+    if (lastResetDate != todayString) {
+      _reset();
+      await prefs.setString(PrefsKeys.lastResetDate, todayString);
     }
   }
 
@@ -101,7 +120,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
-                    padding: EdgeInsetsGeometry.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: WaveProgressIndicator(
                       value: progress,
                       gradient: LinearGradient(
