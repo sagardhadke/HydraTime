@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class AppData {
   static const List<Map<String, dynamic>> genders = [
     {"label": "Male", "img": "assets/icons/male.png"},
@@ -44,6 +47,27 @@ class AppData {
       "label": "Cold",
       "desc": "Cool or cold environment most of the year",
       "img": "assets/icons/Cold.png",
+    },
+  ];
+
+  static const List<Map<String, dynamic>> appInfo = [
+    {
+      "icon": CupertinoIcons.person,
+      "color": Colors.blueAccent,
+      "title": "Developer",
+      "subtitle": "Sagar Dhadke",
+    },
+    {
+      "icon": CupertinoIcons.mail,
+      "color": Colors.teal,
+      "title": "Contact",
+      "subtitle": "sagardeveloper@duck.com",
+    },
+    {
+      "icon": Icons.public,
+      "color": Colors.deepPurple,
+      "title": "Website",
+      "subtitle": "https://github.com/sagardhadke",
     },
   ];
 }
