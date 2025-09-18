@@ -89,7 +89,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
           const SizedBox(height: 10),
 
           Text(
-            "Made with 🫶🏻 by Sagar Dhadke",
+            "Made with ❤️ by Sagar Dhadke",
             style: TextStyle(
               fontSize: 16,
               color: Colors.white,

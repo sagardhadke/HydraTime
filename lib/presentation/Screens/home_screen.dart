@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hydra_time/core/services/notification_service.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:wave_progress_indicator/wave_progress_indicator.dart';
 
 class MyHomeScreen extends StatefulWidget {
@@ -24,10 +25,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     return "${now.day}/${now.month}/${now.year}";
   }
 
-  void _addWater() {
+  void _addWater() async {
     try {
-      if (currentWater >= targetWater) return;
-
       setState(() {
         currentWater += selectedWater;
         if (currentWater > targetWater) {
@@ -41,6 +40,19 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           selectedWater = remaining;
         }
       });
+
+      final prefs = SharedPrefsService.instance;
+      await prefs.setDouble(PrefsKeys.currentWater, currentWater);
+      await prefs.setDouble(PrefsKeys.selectedWater, selectedWater);
+
+      if (currentWater >= targetWater) {
+        await NotificationService().instantNotification(
+          id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          title: "🎉 Goal Achieved!",
+          body:
+              "Congratulations! You've completed your water intake goal today. 💧\n\n🚨 Note: More water isn’t always better — overhydration can be harmful.",
+        );
+      }
     } catch (e) {
       log.e("Error in Add Water $e");
     }
@@ -50,11 +62,24 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   void initState() {
     super.initState();
     _checkAndResetDailyProgress();
+    _loadSavedData();
+  }
+
+  Future<void> _loadSavedData() async {
+    try {
+      final prefs = SharedPrefsService.instance;
+      setState(() {
+        currentWater = prefs.getDouble(PrefsKeys.currentWater);
+        selectedWater = prefs.getDouble(PrefsKeys.selectedWater);
+      });
+    } catch (e) {
+      log.e("Error loading saved water data: $e");
+    }
   }
 
   Future<void> _checkAndResetDailyProgress() async {
-    final prefs = await SharedPreferences.getInstance();
-    final lastResetDate = prefs.getString(PrefsKeys.lastResetDate) ?? '';
+    final prefs = SharedPrefsService.instance;
+    final lastResetDate = prefs.getString(PrefsKeys.lastResetDate);
     final today = DateTime.now();
     final todayString = "${today.year}-${today.month}-${today.day}";
     if (lastResetDate != todayString) {
@@ -63,12 +88,16 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     }
   }
 
-  void _reset() {
+  void _reset() async {
     try {
       setState(() {
         currentWater = 0.0;
         selectedWater = 100.0;
       });
+
+      final prefs = SharedPrefsService.instance;
+      await prefs.setDouble(PrefsKeys.currentWater, 0.0);
+      await prefs.setDouble(PrefsKeys.selectedWater, 100.0);
     } catch (e) {
       log.e("Error while Reset the Progress $e");
     }

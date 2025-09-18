@@ -3,6 +3,9 @@ class PrefsKeys {
   static const String isUserLogin = "user_login";
   static const String lastResetDate = 'last_reset_date';
 
+  static const String currentWater = "currentWater";
+  static const String selectedWater = "selectedWater";
+
   // * User Personal Info
   static const String dailyTarget = 'daily_target';
   static const String fullName = 'full_name';

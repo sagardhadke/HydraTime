@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:hydra_time/presentation/Screens/Onboarding/intro_component.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MyOnBoardingScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _MyOnBoardingScreenState extends State<MyOnBoardingScreen> {
   }
 
   Future<void> getUserOnBoardDetails() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = SharedPrefsService.instance;
     prefs.setBool(PrefsKeys.onboardingComplete, true);
     debugPrint("User onBoarding Successfully");
     Navigator.pushReplacementNamed(context, AppRoutes.personalInfo);
