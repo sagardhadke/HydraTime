@@ -9,6 +9,11 @@ class AppData {
     {"label": "Other", "img": "assets/icons/other.png"},
   ];
 
+  static const List<Map<String, dynamic>> remainder = [
+    {"label": "Intervals", "img": "assets/icons/intervals.png"},
+    {"label": "Specific Time", "img": "assets/icons/specific_Time.png"},
+  ];
+
   static const List<Map<String, dynamic>> yourActivityList = [
     {
       "label": "Sedentary",

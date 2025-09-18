@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 
 class MyReminderScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MyReminderScreenState extends State<MyReminderScreen> {
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
         backgroundColor: AppColors.primaryColor,
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.setupRemainder),
         child: Icon(Icons.add),
       ),
     );
