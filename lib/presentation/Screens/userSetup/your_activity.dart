@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 
 class YourActivity extends StatefulWidget {
   const YourActivity({super.key});
@@ -15,6 +17,7 @@ class YourActivity extends StatefulWidget {
 class _YourActivityState extends State<YourActivity> {
   final log = LoggerService();
   int? selectedAct;
+  String? selectedActivity;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +59,9 @@ class _YourActivityState extends State<YourActivity> {
                       onTap: () {
                         setState(() {
                           selectedAct = index;
+                          selectedActivity = AppData
+                              .yourActivityList[index]['label']
+                              .toString();
                           log.i(
                             "Selected Activities is :${AppData.yourActivityList[index]['label']}",
                           );
@@ -104,7 +110,7 @@ class _YourActivityState extends State<YourActivity> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (selectedAct == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -118,6 +124,11 @@ class _YourActivityState extends State<YourActivity> {
                         ),
                       );
                     } else {
+                      final prefs = SharedPrefsService.instance;
+                      await prefs.setString(
+                        PrefsKeys.activity,
+                        selectedActivity ?? 'Active',
+                      );
                       Navigator.pushNamed(context, AppRoutes.yourClimate);
                     }
                   },
