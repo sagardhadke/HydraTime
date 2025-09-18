@@ -48,7 +48,7 @@ class _WaterSuggestionState extends State<WaterSuggestion> {
                       border: BoxBorder.all(color: AppColors.grey40, width: 2),
                     ),
                     child: Text(
-                      "3.5L",
+                      "3.0L",
                       style: TextStyle(
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
