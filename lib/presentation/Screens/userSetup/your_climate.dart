@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 
 class YourClimate extends StatefulWidget {
   const YourClimate({super.key});
@@ -14,6 +16,7 @@ class YourClimate extends StatefulWidget {
 class _YourClimateState extends State<YourClimate> {
   final log = LoggerService();
   int? selectedClimate;
+  String? selectedClimateStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,8 @@ class _YourClimateState extends State<YourClimate> {
                       onTap: () {
                         setState(() {
                           selectedClimate = index;
+                          selectedClimateStatus =
+                              AppData.yourClimateList[index]['label'];
                           log.i(
                             "Selected Activities is :${AppData.yourClimateList[index]['label']}",
                           );
@@ -103,7 +108,7 @@ class _YourClimateState extends State<YourClimate> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (selectedClimate == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -117,6 +122,11 @@ class _YourClimateState extends State<YourClimate> {
                         ),
                       );
                     } else {
+                      final prefs = SharedPrefsService.instance;
+                      await prefs.setString(
+                        PrefsKeys.climate,
+                        selectedClimateStatus ?? 'Cold',
+                      );
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         AppRoutes.preparingYourPlan,
