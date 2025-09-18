@@ -72,7 +72,7 @@ class _WaterSuggestionState extends State<WaterSuggestion> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.dashBoard);
+                      Navigator.pushReplacementNamed(context, AppRoutes.dashBoard);
                     },
                     child: Text("Get Started"),
                   ),
