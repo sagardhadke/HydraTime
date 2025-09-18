@@ -1,48 +1,77 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
+import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
 import 'package:hydra_time/core/services/shared_prefs_service.dart';
+import 'package:intl/intl.dart';
 
-class IntervalsRemainder extends StatefulWidget {
-  const IntervalsRemainder({super.key});
+class SpecificRemainder extends StatefulWidget {
+  const SpecificRemainder({super.key});
 
   @override
-  State<IntervalsRemainder> createState() => IntervalsRemainderState();
+  State<SpecificRemainder> createState() => SpecificRemainderState();
 }
 
-class IntervalsRemainderState extends State<IntervalsRemainder> {
+class SpecificRemainderState extends State<SpecificRemainder> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  TextEditingController intervalController = TextEditingController();
+  TextEditingController specificTimeController = TextEditingController();
+
+  DateTime nowTime = DateTime.now();
+
   final log = LoggerService();
 
   int? selectedTitleIndex;
   int? selectedDescIndex;
 
-  Future<void> showIntervalPickerDialog(BuildContext context) async {
-    final List<int> intervals = [20, 30, 40, 50, 60];
+  bool isIos = false;
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text("Select Interval Time"),
-          children: intervals.map((minutes) {
-            return SimpleDialogOption(
-              onPressed: () {
-                intervalController.text = "$minutes Minutes";
-                Navigator.pop(context);
-                // scheduleNotificationAfterInterval(minutes);
-              },
-              child: Text("$minutes minutes"),
-            );
-          }).toList(),
-        );
-      },
+  @override
+  void initState() {
+    super.initState();
+    isIos = Platform.isIOS;
+  }
+
+  showTimePicker({
+    required TimeOfDay initialTime,
+    required Function(TimeOfDay) onConfirm,
+  }) {
+    Navigator.of(context).push(
+      showPicker(
+        context: context,
+        accentColor: Colors.blueAccent,
+        backgroundColor: AppColors.grey60,
+        value: Time(hour: initialTime.hour, minute: initialTime.minute),
+        is24HrFormat: false,
+        iosStylePicker: isIos,
+        okStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        cancelStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        onChange: (Time newTime) {
+          final picked = TimeOfDay(hour: newTime.hour, minute: newTime.minute);
+          onConfirm(picked);
+        },
+        okText: "Done",
+        cancelText: "Cancel",
+      ),
     );
+  }
+
+  String formatTimeOfDay(TimeOfDay tod) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
+    final format = DateFormat.jm();
+    return format.format(dt);
   }
 
   @override
@@ -50,7 +79,7 @@ class IntervalsRemainderState extends State<IntervalsRemainder> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Text("Intervals Reminder"),
+        title: const Text("Specific Time Reminder"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -162,20 +191,34 @@ class IntervalsRemainderState extends State<IntervalsRemainder> {
                   );
                 }),
               ),
-              const Text(
-                "Interval",
+              Text(
+                "Time",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               TextField(
-                controller: intervalController,
+                controller: specificTimeController,
                 style: TextStyle(color: AppColors.white),
                 readOnly: true,
-                onTap: () => showIntervalPickerDialog(context),
+                onTap: () => showTimePicker(
+                  initialTime: TimeOfDay.now(),
+                  onConfirm: (value) {
+                    setState(() {
+                      nowTime = DateTime(
+                        DateTime.now().year,
+                        DateTime.now().month,
+                        DateTime.now().day,
+                        value.hour,
+                        value.minute,
+                      );
+                      specificTimeController.text = formatTimeOfDay(value);
+                    });
+                  },
+                ),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: AppColors.grey40,
-                  prefixIcon: Icon(CupertinoIcons.clock),
-                  hintText: 'Select Interval Time',
+                  prefixIcon: Icon(Icons.wb_twilight),
+                  hintText: 'Select Time',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: AppColors.grey20, width: 2),
@@ -197,11 +240,11 @@ class IntervalsRemainderState extends State<IntervalsRemainder> {
                   onPressed: () async {
                     final prefs = SharedPrefsService.instance;
                     await prefs.setString(
-                      PrefsKeys.interval,
-                      intervalController.text,
+                      PrefsKeys.specific,
+                      specificTimeController.text,
                     );
                     log.d(
-                      "Interval Timer Set to be ${intervalController.text}",
+                      "Specific Timer Set to be ${specificTimeController.text}",
                     );
 
                     Navigator.pop(context);

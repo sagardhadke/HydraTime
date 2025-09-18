@@ -17,4 +17,5 @@ class PrefsKeys {
 
   // * Notification Reminder
   static const String interval = 'interval_reminder';
+  static const String specific = 'Specific_reminder';
 }
