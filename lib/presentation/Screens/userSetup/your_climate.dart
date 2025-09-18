@@ -117,7 +117,11 @@ class _YourClimateState extends State<YourClimate> {
                         ),
                       );
                     } else {
-                      Navigator.pushNamed(context, AppRoutes.preparingYourPlan);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRoutes.preparingYourPlan,
+                        (route) => false,
+                      );
                     }
                   },
                   child: Text("Next"),
