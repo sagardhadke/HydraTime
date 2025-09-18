@@ -240,7 +240,7 @@ class SpecificRemainderState extends State<SpecificRemainder> {
                   onPressed: () async {
                     final prefs = SharedPrefsService.instance;
                     await prefs.setString(
-                      PrefsKeys.specific,
+                      PrefsKeys.specificReminderList,
                       specificTimeController.text,
                     );
                     log.d(

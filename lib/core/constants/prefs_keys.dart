@@ -16,6 +16,6 @@ class PrefsKeys {
   static const String climate = "climate";
 
   // * Notification Reminder
-  static const String interval = 'interval_reminder';
-  static const String specific = 'Specific_reminder';
+  static const String intervalsReminderList = 'interval_reminder_list';
+  static const String specificReminderList = 'Specific_reminder_list';
 }

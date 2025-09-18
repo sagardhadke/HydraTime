@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:hydra_time/core/models/reminderModel.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/services/shared_prefs_service.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class IntervalsRemainder extends StatefulWidget {
   const IntervalsRemainder({super.key});
@@ -43,6 +48,70 @@ class IntervalsRemainderState extends State<IntervalsRemainder> {
         );
       },
     );
+  }
+
+  Future<void> saveReminder() async {
+    try {
+      final reminder = ReminderModel(
+        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        title: titleController.text.trim(),
+        description: descController.text.trim(),
+        interval: intervalController.text.trim(),
+      );
+
+      final prefs = SharedPrefsService.instance;
+      final existingList = prefs.getStringList(PrefsKeys.intervalsReminderList);
+      final modifiableList = [...existingList];
+
+      modifiableList.add(jsonEncode(reminder.toJson()));
+
+      await prefs.setStringList(
+        PrefsKeys.intervalsReminderList,
+        modifiableList,
+      );
+
+      final notificationService = NotificationService();
+
+      final intervalText = intervalController.text;
+      final minutes = int.tryParse(intervalText.split(' ').first) ?? 0;
+
+      if (minutes > 0) {
+        final scheduledDate = tz.TZDateTime.now(
+          tz.local,
+        ).add(Duration(minutes: minutes));
+
+        await notificationService.scheduleReminder(
+          id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          title: reminder.title,
+          body: reminder.description,
+          scheduledDate: scheduledDate,
+          payload: jsonEncode(reminder.toJson()),
+        );
+
+        await notificationService.instantNotification(
+          id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          title: "Reminder Scheduled Successfully",
+          body:
+              "Your interval reminder has been set for every $minutes minutes. Please refresh your reminder list to see the latest update.",
+        );
+      }
+
+      Navigator.pop(context, true);
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Failed to save reminder",
+            style: TextStyle(color: AppColors.white),
+          ),
+          backgroundColor: Colors.red,
+          showCloseIcon: true,
+          duration: Duration(seconds: 1),
+        ),
+      );
+      log.e("Failed to save reminder: $e");
+    }
   }
 
   @override
@@ -194,19 +263,7 @@ class IntervalsRemainderState extends State<IntervalsRemainder> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final prefs = SharedPrefsService.instance;
-                    await prefs.setString(
-                      PrefsKeys.interval,
-                      intervalController.text,
-                    );
-                    log.d(
-                      "Interval Timer Set to be ${intervalController.text}",
-                    );
-
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
+                  onPressed: saveReminder,
                   child: Text("Next"),
                 ),
               ),

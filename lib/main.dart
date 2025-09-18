@@ -7,7 +7,7 @@ import 'package:hydra_time/core/theme/app_themes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefsService.instance.init();
-  await NotificationService().initNotification;
+  await NotificationService().initNotification();
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
