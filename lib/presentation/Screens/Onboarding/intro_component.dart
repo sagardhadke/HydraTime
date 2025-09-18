@@ -26,7 +26,7 @@ class IntroComponent extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(description, textAlign: TextAlign.center),
             ),
           ],
