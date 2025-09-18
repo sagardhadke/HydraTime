@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
@@ -6,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
 import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:hydra_time/core/models/reminderModel.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class SpecificRemainder extends StatefulWidget {
   const SpecificRemainder({super.key});
@@ -238,18 +242,92 @@ class SpecificRemainderState extends State<SpecificRemainder> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
+                    if (titleController.text.trim().isEmpty ||
+                        descController.text.trim().isEmpty ||
+                        specificTimeController.text.trim().isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Please fill in all fields",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+
                     final prefs = SharedPrefsService.instance;
-                    await prefs.setString(
-                      PrefsKeys.specificReminderList,
-                      specificTimeController.text,
-                    );
-                    log.d(
-                      "Specific Timer Set to be ${specificTimeController.text}",
+
+                    final int id =
+                        DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+                    final reminder = ReminderModel(
+                      id: id,
+                      title: titleController.text.trim(),
+                      description: descController.text.trim(),
+                      interval: specificTimeController.text.trim(),
                     );
 
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                    try {
+                      final existingList = prefs.getStringList(
+                        PrefsKeys.intervalsReminderList,
+                      );
+                      final modifiableList = [...existingList];
+
+                      modifiableList.add(jsonEncode(reminder.toJson()));
+                      await prefs.setStringList(
+                        PrefsKeys.intervalsReminderList,
+                        modifiableList,
+                      );
+
+                      final now = tz.TZDateTime.now(tz.local);
+
+                      tz.TZDateTime scheduledDate = tz.TZDateTime(
+                        tz.local,
+                        now.year,
+                        now.month,
+                        now.day,
+                        nowTime.hour,
+                        nowTime.minute,
+                      );
+
+                      if (scheduledDate.isBefore(now)) {
+                        scheduledDate = scheduledDate.add(Duration(days: 1));
+                      }
+
+                      final notificationService = NotificationService();
+
+                      await notificationService.scheduleReminder(
+                        id: id,
+                        title: reminder.title,
+                        body: reminder.description,
+                        scheduledDate: scheduledDate,
+                        payload: jsonEncode(reminder.toJson()),
+                      );
+
+                      await notificationService.instantNotification(
+                        id: id + 1,
+                        title: "Reminder Set Successfully",
+                        body:
+                            "Your daily reminder for '${reminder.title}' at ${reminder.interval} has been scheduled. Please refresh your reminder list to see the update.",
+                      );
+
+                      Navigator.pop(context, true);
+                      Navigator.pop(context);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Failed to set reminder",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
+
                   child: Text("Next"),
                 ),
               ),
