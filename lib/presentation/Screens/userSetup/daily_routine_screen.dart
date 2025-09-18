@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:intl/intl.dart';
 
 class DailyRoutine extends StatefulWidget {
@@ -96,7 +98,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
                   fontSize: 15,
                 ),
               ),
-              Text("Weak-Up Time"),
+              Text("Wake-Up Time"),
               TextField(
                 controller: wakeUpTimeController,
                 style: TextStyle(color: AppColors.white),
@@ -114,7 +116,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
                   filled: true,
                   fillColor: AppColors.grey40,
                   prefixIcon: Icon(Icons.wb_twilight),
-                  hintText: 'Select Weak-up Time',
+                  hintText: 'Select Wake-up Time',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: AppColors.grey20, width: 2),
@@ -147,7 +149,7 @@ class _DailyRoutineState extends State<DailyRoutine> {
                   filled: true,
                   fillColor: AppColors.grey40,
                   prefixIcon: Icon(CupertinoIcons.moon),
-                  hintText: 'Select Weak-up Time',
+                  hintText: 'Select Wake-up Time',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: AppColors.grey20, width: 2),
@@ -220,8 +222,26 @@ class _DailyRoutineState extends State<DailyRoutine> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.yourActivity),
+                  onPressed: () async {
+                    final prefs = SharedPrefsService.instance;
+                    await prefs.setString(
+                      PrefsKeys.wakeUpTime,
+                      wakeUpTimeController.text,
+                    );
+                    await prefs.setString(
+                      PrefsKeys.bedTime,
+                      bedTimeController.text,
+                    );
+                    await prefs.setString(
+                      PrefsKeys.height,
+                      heightController.text,
+                    );
+                    await prefs.setString(
+                      PrefsKeys.weight,
+                      weightController.text,
+                    );
+                    Navigator.pushNamed(context, AppRoutes.yourActivity);
+                  },
                   child: Text("Next"),
                 ),
               ),
