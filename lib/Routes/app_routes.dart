@@ -3,7 +3,7 @@ import 'package:hydra_time/presentation/Screens/Onboarding/onBoarding.dart';
 import 'package:hydra_time/presentation/Screens/about_us.dart';
 import 'package:hydra_time/presentation/Screens/dashboard.dart';
 import 'package:hydra_time/presentation/Screens/home_screen.dart';
-import 'package:hydra_time/presentation/Screens/reminder_screen.dart';
+import 'package:hydra_time/presentation/Screens/Reminder/reminder_screen.dart';
 import 'package:hydra_time/presentation/Screens/settings_screen.dart';
 import 'package:hydra_time/presentation/Screens/splash_screen.dart';
 import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';

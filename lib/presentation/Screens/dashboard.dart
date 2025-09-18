@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hydra_time/presentation/Screens/about_us.dart';
 import 'package:hydra_time/presentation/Screens/home_screen.dart';
-import 'package:hydra_time/presentation/Screens/reminder_screen.dart';
+import 'package:hydra_time/presentation/Screens/Reminder/reminder_screen.dart';
 import 'package:hydra_time/presentation/Screens/settings_screen.dart';
 
 class MyDashBoard extends StatefulWidget {
