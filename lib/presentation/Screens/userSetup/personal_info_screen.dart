@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 import 'package:hydra_time/core/constants/app_data.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
 import 'package:hydra_time/core/services/logger_service.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:intl/intl.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -18,6 +20,7 @@ class PersonalInfo extends StatefulWidget {
 class _PersonalInfoState extends State<PersonalInfo> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController dobController = TextEditingController();
+  String? selectedGender;
 
   final log = LoggerService();
 
@@ -171,6 +174,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       onTap: () {
                         setState(() {
                           selectedIndex = index;
+                          selectedGender = AppData.genders[index]['label'];
                           log.d(
                             "Selected Gender $index and ${AppData.genders[index]['label']}",
                           );
@@ -214,7 +218,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (selectedIndex == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -228,6 +232,19 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           ),
                         );
                       } else {
+                        final prefs = SharedPrefsService.instance;
+                        await prefs.setString(
+                          PrefsKeys.gender,
+                          selectedGender ?? 'Male',
+                        );
+                        await prefs.setString(
+                          PrefsKeys.fullName,
+                          fullNameController.text,
+                        );
+                        await prefs.setString(
+                          PrefsKeys.dob,
+                          dobController.text,
+                        );
                         Navigator.pushNamed(context, AppRoutes.dailyRoutine);
                       }
                     },
