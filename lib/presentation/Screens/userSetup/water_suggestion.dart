@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
+import 'package:hydra_time/core/constants/prefs_keys.dart';
+import 'package:hydra_time/core/services/shared_prefs_service.dart';
 
 class WaterSuggestion extends StatefulWidget {
   const WaterSuggestion({super.key});
@@ -71,8 +73,13 @@ class _WaterSuggestionState extends State<WaterSuggestion> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, AppRoutes.dashBoard);
+                    onPressed: () async {
+                      final prefs = SharedPrefsService.instance;
+                      await prefs.setDouble(PrefsKeys.dailyTarget, 3000.0);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        AppRoutes.dashBoard,
+                      );
                     },
                     child: Text("Get Started"),
                   ),
