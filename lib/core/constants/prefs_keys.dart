@@ -14,4 +14,7 @@ class PrefsKeys {
   static const String weight = 'weight';
   static const String activity = "activity";
   static const String climate = "climate";
+
+  // * Notification Reminder
+  static const String interval = 'interval_reminder';
 }

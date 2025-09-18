@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hydra_time/presentation/Screens/Onboarding/onBoarding.dart';
+import 'package:hydra_time/presentation/Screens/Reminder/intervals_remainder.dart';
+import 'package:hydra_time/presentation/Screens/Reminder/setup_remainder.dart';
+import 'package:hydra_time/presentation/Screens/Reminder/specific_remainder.dart';
 import 'package:hydra_time/presentation/Screens/about_us.dart';
 import 'package:hydra_time/presentation/Screens/dashboard.dart';
 import 'package:hydra_time/presentation/Screens/home_screen.dart';
@@ -27,6 +30,9 @@ class AppRoutes {
   static const String reminder = '/reminder';
   static const String settings = '/settings';
   static const String aboutUs = '/aboutUs';
+  static const String setupRemainder = '/setupRemainder';
+  static const String intervalsReminder = '/intervalsReminder';
+  static const String specificReminder = '/specificReminder';
 
   static Map<String, WidgetBuilder> mRoutes = {
     AppRoutes.splash: (_) => MySplashScreen(),
@@ -42,5 +48,8 @@ class AppRoutes {
     AppRoutes.reminder : (_) => MyReminderScreen(),
     AppRoutes.settings : (_) => MySettingsScreen(),
     AppRoutes.aboutUs : (_) => AboutUsScreen(),
+    AppRoutes.setupRemainder : (_) => SetupRemainder(),
+    AppRoutes.intervalsReminder : (_) => IntervalsRemainder(),
+    AppRoutes.specificReminder : (_) => SpecificRemainder(),
   };
 }

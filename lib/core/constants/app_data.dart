@@ -14,6 +14,21 @@ class AppData {
     {"label": "Specific Time", "img": "assets/icons/specific_Time.png"},
   ];
 
+  static List<String> reminderTitle = [
+    "Water Time",
+    "Hydration Alert",
+    "Drink Up!",
+    "Drink Reminder",
+    "Refill & Recharge",
+  ];
+
+  static List<String> reminderDesc = [
+    "It’s time to drink water",
+    "Refuel with water 💧",
+    "Let’s stay fresh and hydrated",
+    "Your body needs water",
+  ];
+
   static const List<Map<String, dynamic>> yourActivityList = [
     {
       "label": "Sedentary",
