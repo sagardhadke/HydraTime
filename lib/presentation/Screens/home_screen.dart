@@ -124,7 +124,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Home'), centerTitle: false),
+      appBar: AppBar(title: const Text('Home'), scrolledUnderElevation: 0),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: SingleChildScrollView(
