@@ -12,7 +12,7 @@ class ReminderModel {
   });
 
   factory ReminderModel.fromJson(Map<String, dynamic> json) => ReminderModel(
-    id: json['id'] ?? 0, // Provide default value
+    id: json['id'] ?? 0,
     title: json['title'] ?? '',
     description: json['description'] ?? '',
     interval: json['interval'] ?? '',
