@@ -3,9 +3,9 @@ import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/services/shared_prefs_service.dart';
 import 'package:hydra_time/core/theme/app_themes.dart';
-import 'package:hydra_time/presentation/Screens/Reminder/providers/reminders_provider.dart';
 import 'package:hydra_time/provider/about_us_provider.dart';
 import 'package:hydra_time/provider/myOnBoarding_provider.dart';
+import 'package:hydra_time/provider/reminders_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
