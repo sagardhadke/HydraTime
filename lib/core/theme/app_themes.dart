@@ -1,3 +1,10 @@
+export 'dark_theme.dart';
+export 'light_theme.dart';
+export 'theme_provider.dart';
+export 'models/theme_settings_model.dart';
+
+//* v1 old
+
 import 'package:flutter/material.dart';
 import 'package:hydra_time/core/constants/app_colors.dart';
 
