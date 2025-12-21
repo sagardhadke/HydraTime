@@ -20,9 +20,9 @@ class LoggerService {
     ),
   );
 
-  void d(dynamic message) => _logger.d(message);     // debug
-  void i(dynamic message) => _logger.i(message);     // info
-  void w(dynamic message) => _logger.w(message);     // warning
-  void e(dynamic message) => _logger.e(message);     // error
-  void v(dynamic message) => _logger.v(message);     // verbose
+  void d(dynamic message) => _logger.d(message);
+  void i(dynamic message) => _logger.i(message);
+  void w(dynamic message) => _logger.w(message);
+  void e(dynamic message) => _logger.e(message);
+  void v(dynamic message) => _logger.v(message);
 }
