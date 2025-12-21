@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/config/dependency_injection/injection_container.dart';
 import 'package:hydra_time/core/services/notification_service.dart';
-import 'package:hydra_time/core/theme/app_themes.dart';
+import 'package:hydra_time/core/theme/theme_provider.dart';
 import 'package:hydra_time/provider/about_us_provider.dart';
 import 'package:hydra_time/provider/myOnBoarding_provider.dart';
 import 'package:hydra_time/provider/reminders_provider.dart';
@@ -18,15 +19,6 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.black,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ),
-  );
 
   try {
     await initializeDependencies();
@@ -47,11 +39,15 @@ void main() async {
       debugPrint('✅ No migration needed');
     }
 
+    final themeProvider = sl<ThemeProvider>();
+    await themeProvider.initTheme();
+    debugPrint('✅ Theme initialized');
+
     final notificationService = sl<NotificationService>();
     await notificationService.initNotification();
     debugPrint('✅ Notifications initialized');
 
-    runApp(const MyApp());
+    runApp(MyApp(themeProvider: themeProvider));
   } catch (e, stackTrace) {
     debugPrint('❌ Fatal error during initialization: $e');
     debugPrint('Stack trace: $stackTrace');
@@ -80,7 +76,6 @@ void main() async {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Restart app
                       SystemNavigator.pop();
                     },
                     child: const Text('Restart App'),
@@ -95,23 +90,68 @@ void main() async {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  final ThemeProvider themeProvider;
+  const MyApp({super.key, required this.themeProvider});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    final brightness =
+        SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    widget.themeProvider.updateSystemTheme(brightness);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: widget.themeProvider),
         ChangeNotifierProvider(create: (_) => MyOnboardingProvider()),
         ChangeNotifierProvider(create: (_) => AboutUsProvider()),
         ChangeNotifierProvider(create: (_) => RemindersProvider()),
       ],
-      child: MaterialApp(
-        title: 'HydraTime',
-        debugShowCheckedModeBanner: false,
-        theme: darkTheme,
-        initialRoute: AppRoutes.splash,
-        routes: AppRoutes.mRoutes,
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          SystemChrome.setSystemUIOverlayStyle(
+            SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: themeProvider.isDarkMode
+                  ? Brightness.light
+                  : Brightness.dark,
+              systemNavigationBarColor: themeProvider.isDarkMode
+                  ? Colors.black
+                  : Colors.white,
+              systemNavigationBarIconBrightness: themeProvider.isDarkMode
+                  ? Brightness.light
+                  : Brightness.dark,
+            ),
+          );
+
+          return MaterialApp(
+            title: 'HydraTime',
+            debugShowCheckedModeBanner: false,
+            theme: themeProvider.themeData,
+            initialRoute: AppRoutes.splash,
+            routes: AppRoutes.mRoutes,
+          );
+        },
       ),
     );
   }

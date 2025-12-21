@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:hydra_time/core/constants/hive_type_ids.dart';
 
+part 'theme_settings_model.g.dart';
+
 @HiveType(typeId: HiveTypeIds.appSettings)
 class ThemeSettingsModel extends HiveObject {
   @HiveField(0)

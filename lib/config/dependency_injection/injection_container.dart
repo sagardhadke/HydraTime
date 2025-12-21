@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/services/shared_prefs_service.dart';
+import 'package:hydra_time/core/theme/theme_provider.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
 
@@ -16,4 +17,6 @@ Future<void> initializeDependencies() async {
   );
 
   sl.registerLazySingleton<NotificationService>(() => NotificationService());
+
+  sl.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
 }

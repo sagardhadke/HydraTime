@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydra_time/core/constants/hive_box_names.dart';
 import 'package:hydra_time/core/errors/exceptions.dart';
+import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
@@ -37,6 +38,10 @@ class HiveService {
 
   Future<void> registerAdapters() async {
     try {
+      if (!Hive.isAdapterRegistered(7)) {
+        Hive.registerAdapter(ThemeSettingsModelAdapter());
+      }
+
       debugPrint('✅ Hive adapters registered successfully');
     } catch (e) {
       debugPrint('❌ Adapter registration failed: $e');
