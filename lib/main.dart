@@ -5,8 +5,8 @@ import 'package:hydra_time/Routes/app_routes.dart';
 import 'package:hydra_time/config/dependency_injection/injection_container.dart';
 import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/theme/theme_provider.dart';
+import 'package:hydra_time/features/onboarding/presentation/providers/onboarding_provider.dart';
 import 'package:hydra_time/provider/about_us_provider.dart';
-import 'package:hydra_time/provider/myOnBoarding_provider.dart';
 import 'package:hydra_time/provider/reminders_provider.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: widget.themeProvider),
-        ChangeNotifierProvider(create: (_) => MyOnboardingProvider()),
+        ChangeNotifierProvider(create: (_) => sl<OnboardingProvider>()),
         ChangeNotifierProvider(create: (_) => AboutUsProvider()),
         ChangeNotifierProvider(create: (_) => RemindersProvider()),
       ],

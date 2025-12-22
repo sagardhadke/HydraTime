@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hydra_time/presentation/Screens/Onboarding/onBoarding.dart';
+import 'package:hydra_time/features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/intervals_remainder.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/setup_remainder.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/specific_remainder.dart';
@@ -35,21 +35,21 @@ class AppRoutes {
   static const String specificReminder = '/specificReminder';
 
   static Map<String, WidgetBuilder> mRoutes = {
-    AppRoutes.splash: (_) => MySplashScreen(),
-    AppRoutes.onBoarding: (_) => MyOnBoardingScreen(),
-    AppRoutes.dashBoard: (_) => MyDashBoard(),
-    AppRoutes.personalInfo: (_) => PersonalInfo(),
-    AppRoutes.dailyRoutine: (_) => DailyRoutine(),
-    AppRoutes.yourActivity: (_) => YourActivity(),
-    AppRoutes.yourClimate: (_) => YourClimate(),
-    AppRoutes.preparingYourPlan: (_) => PreparingYourPlan(),
-    AppRoutes.waterSuggestion : (_) => WaterSuggestion(),
-    AppRoutes.home : (_) => MyHomeScreen(),
-    AppRoutes.reminder : (_) => MyReminderScreen(),
-    AppRoutes.settings : (_) => MySettingsScreen(),
-    AppRoutes.aboutUs : (_) => AboutUsScreen(),
-    AppRoutes.setupRemainder : (_) => SetupRemainder(),
-    AppRoutes.intervalsReminder : (_) => IntervalsRemainder(),
-    AppRoutes.specificReminder : (_) => SpecificRemainder(),
+    AppRoutes.splash: (_) => const MySplashScreen(),
+    AppRoutes.onBoarding: (_) => const OnboardingScreen(),
+    AppRoutes.dashBoard: (_) => const MyDashBoard(),
+    AppRoutes.personalInfo: (_) => const PersonalInfo(),
+    AppRoutes.dailyRoutine: (_) => const DailyRoutine(),
+    AppRoutes.yourActivity: (_) => const YourActivity(),
+    AppRoutes.yourClimate: (_) => const YourClimate(),
+    AppRoutes.preparingYourPlan: (_) => const PreparingYourPlan(),
+    AppRoutes.waterSuggestion: (_) => const WaterSuggestion(),
+    AppRoutes.home: (_) => const MyHomeScreen(),
+    AppRoutes.reminder: (_) => const MyReminderScreen(),
+    AppRoutes.settings: (_) => const MySettingsScreen(),
+    AppRoutes.aboutUs: (_) => const AboutUsScreen(),
+    AppRoutes.setupRemainder: (_) => const SetupRemainder(),
+    AppRoutes.intervalsReminder: (_) => const IntervalsRemainder(),
+    AppRoutes.specificReminder: (_) => const SpecificRemainder(),
   };
 }
