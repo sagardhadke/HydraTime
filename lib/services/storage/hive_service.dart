@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydra_time/core/constants/hive_box_names.dart';
 import 'package:hydra_time/core/errors/exceptions.dart';
 import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
+import 'package:hydra_time/features/onboarding/data/models/onboarding_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
@@ -40,6 +41,9 @@ class HiveService {
     try {
       if (!Hive.isAdapterRegistered(7)) {
         Hive.registerAdapter(ThemeSettingsModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(8)) {
+        Hive.registerAdapter(OnboardingModelAdapter());
       }
 
       debugPrint('✅ Hive adapters registered successfully');
