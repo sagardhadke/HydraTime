@@ -5,21 +5,21 @@ import 'package:hydra_time/core/usecases/usecase.dart';
 import 'package:hydra_time/features/user_profile/data/repositories/user_profile_repository.dart';
 import 'package:hydra_time/features/user_profile/domain/entities/user_profile.dart';
 
-class SaveUserProfile implements UseCase<void, SaveUserProfileParams> {
+class UpdateUserProfile implements UseCase<void, UpdateUserProfileParams> {
   final UserProfileRepository repository;
 
-  SaveUserProfile({required this.repository});
+  UpdateUserProfile({required this.repository});
 
   @override
-  Future<Either<Failure, void>> call(SaveUserProfileParams params) async {
-    return await repository.saveUserProfile(params.profile);
+  Future<Either<Failure, void>> call(UpdateUserProfileParams params) async {
+    return await repository.updateUserProfile(params.profile);
   }
 }
 
-class SaveUserProfileParams extends Equatable {
+class UpdateUserProfileParams extends Equatable {
   final UserProfile profile;
 
-  const SaveUserProfileParams({required this.profile});
+  const UpdateUserProfileParams({required this.profile});
 
   @override
   List<Object?> get props => [profile];
