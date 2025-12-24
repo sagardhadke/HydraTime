@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hydra_time/features/onboarding/presentation/pages/onboarding_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/activity_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/climate_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/daily_routine_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/personal_info_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/preparing_plan_screen.dart';
+import 'package:hydra_time/features/user_profile/presentation/pages/water_suggestion_screen.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/intervals_remainder.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/setup_remainder.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/specific_remainder.dart';
@@ -9,12 +15,6 @@ import 'package:hydra_time/presentation/Screens/home_screen.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/reminder_screen.dart';
 import 'package:hydra_time/presentation/Screens/settings_screen.dart';
 import 'package:hydra_time/presentation/Screens/splash_screen.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/daily_routine_screen.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/personal_info_screen.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/preparing_your_plan.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/water_suggestion.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/your_activity.dart';
-import 'package:hydra_time/presentation/Screens/userSetup/your_climate.dart';
 
 class AppRoutes {
   static const String home = '/home';
@@ -38,12 +38,12 @@ class AppRoutes {
     AppRoutes.splash: (_) => const MySplashScreen(),
     AppRoutes.onBoarding: (_) => const OnboardingScreen(),
     AppRoutes.dashBoard: (_) => const MyDashBoard(),
-    AppRoutes.personalInfo: (_) => const PersonalInfo(),
-    AppRoutes.dailyRoutine: (_) => const DailyRoutine(),
-    AppRoutes.yourActivity: (_) => const YourActivity(),
-    AppRoutes.yourClimate: (_) => const YourClimate(),
-    AppRoutes.preparingYourPlan: (_) => const PreparingYourPlan(),
-    AppRoutes.waterSuggestion: (_) => const WaterSuggestion(),
+    AppRoutes.personalInfo: (_) => const PersonalInfoScreen(),
+    AppRoutes.dailyRoutine: (_) => const DailyRoutineScreen(),
+    AppRoutes.yourActivity: (_) => const ActivityScreen(),
+    AppRoutes.yourClimate: (_) => const ClimateScreen(),
+    AppRoutes.preparingYourPlan: (_) => const PreparingPlanScreen(),
+    AppRoutes.waterSuggestion: (_) => const WaterSuggestionScreen(),
     AppRoutes.home: (_) => const MyHomeScreen(),
     AppRoutes.reminder: (_) => const MyReminderScreen(),
     AppRoutes.settings: (_) => const MySettingsScreen(),

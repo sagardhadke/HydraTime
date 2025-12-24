@@ -4,6 +4,7 @@ import 'package:hydra_time/core/constants/hive_box_names.dart';
 import 'package:hydra_time/core/errors/exceptions.dart';
 import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
 import 'package:hydra_time/features/onboarding/data/models/onboarding_model.dart';
+import 'package:hydra_time/features/user_profile/data/models/user_profile_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
@@ -44,6 +45,9 @@ class HiveService {
       }
       if (!Hive.isAdapterRegistered(8)) {
         Hive.registerAdapter(OnboardingModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(0)) {
+        Hive.registerAdapter(UserProfileModelAdapter());
       }
 
       debugPrint('✅ Hive adapters registered successfully');
