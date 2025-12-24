@@ -10,6 +10,14 @@ import 'package:hydra_time/features/onboarding/domain/usecases/complete_onboardi
 import 'package:hydra_time/features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import 'package:hydra_time/features/onboarding/domain/usecases/update_current_page.dart';
 import 'package:hydra_time/features/onboarding/presentation/providers/onboarding_provider.dart';
+import 'package:hydra_time/features/user_profile/data/datasources/user_profile_local_datasource.dart';
+import 'package:hydra_time/features/user_profile/data/repositories/user_profile_repository.dart';
+import 'package:hydra_time/features/user_profile/data/repositories/user_profile_repository_impl.dart';
+import 'package:hydra_time/features/user_profile/domain/usecases/calculate_water_goal.dart';
+import 'package:hydra_time/features/user_profile/domain/usecases/get_user_profile.dart';
+import 'package:hydra_time/features/user_profile/domain/usecases/save_user_profile.dart';
+import 'package:hydra_time/features/user_profile/domain/usecases/update_user_profile.dart';
+import 'package:hydra_time/features/user_profile/presentation/providers/user_profile_provider.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
 
@@ -31,24 +39,42 @@ Future<void> initializeDependencies() async {
     () => OnboardingLocalDataSourceImpl(hiveService: sl()),
   );
 
-  // Repositories
   sl.registerLazySingleton<OnboardingRepository>(
     () => OnboardingRepositoryImpl(localDataSource: sl()),
   );
 
-  // Use Cases
   sl.registerLazySingleton(() => CheckOnboardingStatus(repository: sl()));
   sl.registerLazySingleton(() => CompleteOnboarding(repository: sl()));
   sl.registerLazySingleton(() => GetOnboardingPages(repository: sl()));
   sl.registerLazySingleton(() => UpdateCurrentPage(repository: sl()));
 
-  // Provider
   sl.registerFactory(
     () => OnboardingProvider(
       checkOnboardingStatus: sl(),
       completeOnboarding: sl(),
       getOnboardingPages: sl(),
       updateCurrentPage: sl(),
+    ),
+  );
+  sl.registerLazySingleton<UserProfileLocalDataSource>(
+    () => UserProfileLocalDataSourceImpl(hiveService: sl()),
+  );
+
+  sl.registerLazySingleton<UserProfileRepository>(
+    () => UserProfileRepositoryImpl(localDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetUserProfile(repository: sl()));
+  sl.registerLazySingleton(() => SaveUserProfile(repository: sl()));
+  sl.registerLazySingleton(() => UpdateUserProfile(repository: sl()));
+  sl.registerLazySingleton(() => CalculateWaterGoal(repository: sl()));
+
+  sl.registerFactory(
+    () => UserProfileProvider(
+      getUserProfileUseCase: sl(),
+      saveUserProfileUseCase: sl(),
+      updateUserProfileUseCase: sl(),
+      calculateWaterGoalUseCase: sl(),
     ),
   );
 }
