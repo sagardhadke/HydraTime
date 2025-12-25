@@ -6,23 +6,23 @@ import 'package:hydra_time/features/water_tracking/domain/entities/water_intake.
 
 part 'daily_log_model.g.dart';
 
-@HiveType(typeId: HiveTypeIds. dailyLog)
+@HiveType(typeId: HiveTypeIds.dailyLog)
 class DailyLogModel extends DailyLog {
   const DailyLogModel({
     required super.date,
     required super.intakes,
     required super.dailyGoal,
-    required super. totalIntake,
+    required super.totalIntake,
   });
 
-  factory DailyLogModel. initial({
-    required double dailyGoal,
-  }) {
+  factory DailyLogModel.initial({required double dailyGoal}) {
+    final validGoal = dailyGoal > 0 ? dailyGoal : 2000.0;
+
     return DailyLogModel(
       date: DateTime.now(),
       intakes: [],
-      dailyGoal: dailyGoal,
-      totalIntake: 0,
+      dailyGoal: validGoal,
+      totalIntake: 0.0,
     );
   }
 
@@ -30,8 +30,8 @@ class DailyLogModel extends DailyLog {
     return DailyLogModel(
       date: entity.date,
       intakes: entity.intakes,
-      dailyGoal: entity.dailyGoal,
-      totalIntake: entity.totalIntake,
+      dailyGoal: entity.dailyGoal > 0 ? entity.dailyGoal : 2000.0,
+      totalIntake: entity.totalIntake >= 0 ? entity.totalIntake : 0.0,
     );
   }
 
@@ -44,33 +44,41 @@ class DailyLogModel extends DailyLog {
     return DailyLogModel(
       date: date ?? this.date,
       intakes: intakes ?? this.intakes,
-      dailyGoal: dailyGoal ?? this. dailyGoal,
+      dailyGoal: dailyGoal ?? this.dailyGoal,
       totalIntake: totalIntake ?? this.totalIntake,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'date': date.toIso8601String(),
-        'intakes': intakes
-            .map((intake) =>
-                (intake as WaterIntakeModel).toJson())
-            .toList(),
-        'dailyGoal': dailyGoal,
-        'totalIntake': totalIntake,
-      };
+    'date': date.toIso8601String(),
+    'intakes': intakes
+        .map((intake) => (intake as WaterIntakeModel).toJson())
+        .toList(),
+    'dailyGoal': dailyGoal,
+    'totalIntake': totalIntake,
+  };
 
   factory DailyLogModel.fromJson(Map<String, dynamic> json) {
-    final intakesList = (json['intakes'] as List?)
-            ?.map((intake) =>
-                WaterIntakeModel. fromJson(intake as Map<String, dynamic>))
+    final intakesList =
+        (json['intakes'] as List?)
+            ?.map(
+              (intake) =>
+                  WaterIntakeModel.fromJson(intake as Map<String, dynamic>),
+            )
             .toList() ??
         [];
+
+    final dailyGoal = (json['dailyGoal'] as num?)?.toDouble() ?? 2000.0;
+    final totalIntake = (json['totalIntake'] as num?)?.toDouble() ?? 0.0;
+
+    final validGoal = dailyGoal > 0 ? dailyGoal : 2000.0;
+    final validIntake = totalIntake >= 0 ? totalIntake : 0.0;
 
     return DailyLogModel(
       date: DateTime.parse(json['date'] as String),
       intakes: intakesList,
-      dailyGoal: (json['dailyGoal'] as num).toDouble(),
-      totalIntake: (json['totalIntake'] as num).toDouble(),
+      dailyGoal: validGoal,
+      totalIntake: validIntake,
     );
   }
 }
