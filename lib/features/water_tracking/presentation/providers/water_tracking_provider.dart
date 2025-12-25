@@ -20,14 +20,12 @@ class WaterTrackingProvider extends ChangeNotifier {
     required this.getIntakeHistoryUseCase,
   });
 
-  // State variables
   DailyLog? _dailyLog;
   List<DailyLog> _logHistory = [];
   bool _isLoading = false;
   String? _errorMessage;
   bool _goalAchieved = false;
 
-  // Getters
   DailyLog? get dailyLog => _dailyLog;
   List<DailyLog> get logHistory => _logHistory;
   bool get isLoading => _isLoading;
@@ -40,17 +38,14 @@ class WaterTrackingProvider extends ChangeNotifier {
   int get remainingMl => _dailyLog?.remainingMl ?? 0;
   List<WaterIntake> get intakes => _dailyLog?.intakes ?? [];
 
-  /// Initialize water tracking for today
   Future<void> initializeTodayTracking(UserProfile? userProfile) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      // Get user's daily goal
       final goal = userProfile?.dailyWaterGoal ?? 2000;
 
-      // Load today's log
       final result = await getDailyIntakeUseCase(
         GetDailyIntakeParams(date: DateTime.now()),
       );
@@ -62,7 +57,6 @@ class WaterTrackingProvider extends ChangeNotifier {
           notifyListeners();
         },
         (log) {
-          // Update goal if different
           if (log.dailyGoal != goal) {
             _dailyLog = log.copyWith(dailyGoal: goal);
           } else {
@@ -82,7 +76,6 @@ class WaterTrackingProvider extends ChangeNotifier {
     }
   }
 
-  /// Load today's log
   Future<void> loadTodayLog() async {
     _isLoading = true;
     _errorMessage = null;
@@ -108,7 +101,6 @@ class WaterTrackingProvider extends ChangeNotifier {
     );
   }
 
-  /// Add water intake
   Future<bool> addWater(double amount, {String? notes}) async {
     if (_dailyLog == null) {
       _errorMessage = 'Daily log not initialized';
@@ -135,7 +127,6 @@ class WaterTrackingProvider extends ChangeNotifier {
           return false;
         },
         (_) async {
-          // Reload today's log
           await loadTodayLog();
           return true;
         },
@@ -147,7 +138,6 @@ class WaterTrackingProvider extends ChangeNotifier {
     }
   }
 
-  /// Remove water intake
   Future<bool> removeWater(String intakeId) async {
     try {
       final result = await removeWaterIntakeUseCase(
@@ -161,7 +151,6 @@ class WaterTrackingProvider extends ChangeNotifier {
           return false;
         },
         (_) async {
-          // Reload today's log
           await loadTodayLog();
           return true;
         },
@@ -173,7 +162,6 @@ class WaterTrackingProvider extends ChangeNotifier {
     }
   }
 
-  /// Load intake history
   Future<void> loadHistory(int days) async {
     _isLoading = true;
     _errorMessage = null;
@@ -198,7 +186,6 @@ class WaterTrackingProvider extends ChangeNotifier {
     );
   }
 
-  /// Clear error message
   void clearError() {
     _errorMessage = null;
     notifyListeners();

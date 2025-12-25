@@ -18,10 +18,14 @@ class DailyLog extends Equatable {
 
   double get percentage => dailyGoal > 0 ? (totalIntake / dailyGoal) * 100 : 0;
 
-  int get remainingMl =>
-      ((dailyGoal - totalIntake).toInt()).clamp(0, double.infinity.toInt());
+  int get remainingMl {
+    if (dailyGoal <= 0) return 0;
+    final remaining = dailyGoal - totalIntake;
+    if (remaining.isNaN || remaining.isInfinite) return 0;
+    if (remaining < 0) return 0;
+    return remaining.toInt();
+  }
 
-  /// Copy with method to create a new instance with updated fields
   DailyLog copyWith({
     DateTime? date,
     List<WaterIntake>? intakes,
