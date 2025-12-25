@@ -21,6 +21,21 @@ class DailyLog extends Equatable {
   int get remainingMl =>
       ((dailyGoal - totalIntake).toInt()).clamp(0, double.infinity.toInt());
 
+  /// Copy with method to create a new instance with updated fields
+  DailyLog copyWith({
+    DateTime? date,
+    List<WaterIntake>? intakes,
+    double? dailyGoal,
+    double? totalIntake,
+  }) {
+    return DailyLog(
+      date: date ?? this.date,
+      intakes: intakes ?? this.intakes,
+      dailyGoal: dailyGoal ?? this.dailyGoal,
+      totalIntake: totalIntake ?? this.totalIntake,
+    );
+  }
+
   @override
   List<Object?> get props => [date, intakes, dailyGoal, totalIntake];
 }
