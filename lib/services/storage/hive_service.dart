@@ -5,6 +5,8 @@ import 'package:hydra_time/core/errors/exceptions.dart';
 import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
 import 'package:hydra_time/features/onboarding/data/models/onboarding_model.dart';
 import 'package:hydra_time/features/user_profile/data/models/user_profile_model.dart';
+import 'package:hydra_time/features/water_tracking/data/models/daily_log_model.dart';
+import 'package:hydra_time/features/water_tracking/data/models/water_intake_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
@@ -48,6 +50,12 @@ class HiveService {
       }
       if (!Hive.isAdapterRegistered(0)) {
         Hive.registerAdapter(UserProfileModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(1)) {
+        Hive.registerAdapter(WaterIntakeModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(2)) {
+        Hive.registerAdapter(DailyLogModelAdapter());
       }
 
       debugPrint('✅ Hive adapters registered successfully');

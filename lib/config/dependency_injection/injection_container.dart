@@ -18,6 +18,14 @@ import 'package:hydra_time/features/user_profile/domain/usecases/get_user_profil
 import 'package:hydra_time/features/user_profile/domain/usecases/save_user_profile.dart';
 import 'package:hydra_time/features/user_profile/domain/usecases/update_user_profile.dart';
 import 'package:hydra_time/features/user_profile/presentation/providers/user_profile_provider.dart';
+import 'package:hydra_time/features/water_tracking/data/datasources/water_tracking_local_datasource.dart';
+import 'package:hydra_time/features/water_tracking/data/repositories/water_tracking_repository_impl.dart';
+import 'package:hydra_time/features/water_tracking/domain/repositories/water_tracking_repository.dart';
+import 'package:hydra_time/features/water_tracking/domain/usecases/add_water_intake.dart';
+import 'package:hydra_time/features/water_tracking/domain/usecases/get_daily_intake.dart';
+import 'package:hydra_time/features/water_tracking/domain/usecases/get_intake_history.dart';
+import 'package:hydra_time/features/water_tracking/domain/usecases/remove_water_intake.dart';
+import 'package:hydra_time/features/water_tracking/presentation/providers/water_tracking_provider.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
 
@@ -75,6 +83,27 @@ Future<void> initializeDependencies() async {
       saveUserProfileUseCase: sl(),
       updateUserProfileUseCase: sl(),
       calculateWaterGoalUseCase: sl(),
+    ),
+  );
+  sl.registerLazySingleton<WaterTrackingLocalDataSource>(
+    () => WaterTrackingLocalDataSourceImpl(hiveService: sl()),
+  );
+
+  sl.registerLazySingleton<WaterTrackingRepository>(
+    () => WaterTrackingRepositoryImpl(localDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetDailyIntake(repository: sl()));
+  sl.registerLazySingleton(() => AddWaterIntake(repository: sl()));
+  sl.registerLazySingleton(() => RemoveWaterIntake(repository: sl()));
+  sl.registerLazySingleton(() => GetIntakeHistory(repository: sl()));
+
+  sl.registerFactory(
+    () => WaterTrackingProvider(
+      getDailyIntakeUseCase: sl(),
+      addWaterIntakeUseCase: sl(),
+      removeWaterIntakeUseCase: sl(),
+      getIntakeHistoryUseCase: sl(),
     ),
   );
 }
