@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hydra_time/features/statistics/presentation/pages/statistics_screen.dart';
 import 'package:hydra_time/presentation/Screens/about_us.dart';
 import 'package:hydra_time/presentation/Screens/home_screen.dart';
 import 'package:hydra_time/presentation/Screens/Reminder/reminder_screen.dart';
@@ -19,6 +20,7 @@ class _MyDashBoardState extends State<MyDashBoard> {
     MyReminderScreen(),
     MySettingsScreen(),
     AboutUsScreen(),
+    StatisticsScreen(),
   ];
 
   @override
@@ -48,6 +50,10 @@ class _MyDashBoardState extends State<MyDashBoard> {
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.info),
             label: 'About Us',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.chart_bar),
+            label: 'Statistics',
           ),
         ],
       ),

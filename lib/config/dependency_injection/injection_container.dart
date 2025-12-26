@@ -10,6 +10,14 @@ import 'package:hydra_time/features/onboarding/domain/usecases/complete_onboardi
 import 'package:hydra_time/features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import 'package:hydra_time/features/onboarding/domain/usecases/update_current_page.dart';
 import 'package:hydra_time/features/onboarding/presentation/providers/onboarding_provider.dart';
+import 'package:hydra_time/features/statistics/data/datasources/statistics_local_datasource.dart';
+import 'package:hydra_time/features/statistics/data/repositories/statistics_repository_impl.dart';
+import 'package:hydra_time/features/statistics/domain/repositories/statistics_repository.dart';
+import 'package:hydra_time/features/statistics/domain/usecases/get_achievements.dart';
+import 'package:hydra_time/features/statistics/domain/usecases/get_daily_statistics.dart';
+import 'package:hydra_time/features/statistics/domain/usecases/get_streak.dart';
+import 'package:hydra_time/features/statistics/domain/usecases/get_weekly_stats.dart';
+import 'package:hydra_time/features/statistics/presentation/providers/statistics_provider.dart';
 import 'package:hydra_time/features/user_profile/data/datasources/user_profile_local_datasource.dart';
 import 'package:hydra_time/features/user_profile/data/repositories/user_profile_repository.dart';
 import 'package:hydra_time/features/user_profile/data/repositories/user_profile_repository_impl.dart';
@@ -104,6 +112,31 @@ Future<void> initializeDependencies() async {
       addWaterIntakeUseCase: sl(),
       removeWaterIntakeUseCase: sl(),
       getIntakeHistoryUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<StatisticsLocalDataSource>(
+    () => StatisticsLocalDataSourceImpl(hiveService: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<StatisticsRepository>(
+    () => StatisticsRepositoryImpl(localDataSource: sl()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetDailyStatistics(repository: sl()));
+  sl.registerLazySingleton(() => GetAchievements(repository: sl()));
+  sl.registerLazySingleton(() => GetStreak(repository: sl()));
+  sl.registerLazySingleton(() => GetWeeklyStats(repository: sl()));
+
+  // Provider
+  sl.registerFactory(
+    () => StatisticsProvider(
+      getDailyStatisticsUseCase: sl(),
+      getAchievementsUseCase: sl(),
+      getStreakUseCase: sl(),
+      getWeeklyStatsUseCase: sl(),
     ),
   );
 }
