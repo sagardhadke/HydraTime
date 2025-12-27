@@ -4,6 +4,7 @@ import 'package:hydra_time/core/constants/hive_box_names.dart';
 import 'package:hydra_time/core/errors/exceptions.dart';
 import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
 import 'package:hydra_time/features/onboarding/data/models/onboarding_model.dart';
+import 'package:hydra_time/features/settings/data/models/settings_model.dart';
 import 'package:hydra_time/features/user_profile/data/models/user_profile_model.dart';
 import 'package:hydra_time/features/water_tracking/data/models/daily_log_model.dart';
 import 'package:hydra_time/features/water_tracking/data/models/water_intake_model.dart';
@@ -47,6 +48,9 @@ class HiveService {
       }
       if (!Hive.isAdapterRegistered(8)) {
         Hive.registerAdapter(OnboardingModelAdapter());
+      }
+      if (!Hive.isAdapterRegistered(9)) {
+        Hive.registerAdapter(SettingsModelAdapter());
       }
       if (!Hive.isAdapterRegistered(0)) {
         Hive.registerAdapter(UserProfileModelAdapter());
