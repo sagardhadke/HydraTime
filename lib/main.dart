@@ -6,6 +6,7 @@ import 'package:hydra_time/config/dependency_injection/injection_container.dart'
 import 'package:hydra_time/core/services/notification_service.dart';
 import 'package:hydra_time/core/theme/theme_provider.dart';
 import 'package:hydra_time/features/onboarding/presentation/providers/onboarding_provider.dart';
+import 'package:hydra_time/features/settings/presentation/providers/settings_provider.dart';
 import 'package:hydra_time/features/statistics/presentation/providers/statistics_provider.dart';
 import 'package:hydra_time/features/user_profile/presentation/providers/user_profile_provider.dart';
 import 'package:hydra_time/features/water_tracking/presentation/providers/water_tracking_provider.dart';
@@ -130,6 +131,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => sl<UserProfileProvider>()),
         ChangeNotifierProvider(create: (_) => sl<WaterTrackingProvider>()),
         ChangeNotifierProvider(create: (_) => sl<StatisticsProvider>()),
+        ChangeNotifierProvider(create: (_) => sl<SettingsProvider>()),
         ChangeNotifierProvider(create: (_) => AboutUsProvider()),
         ChangeNotifierProvider(create: (_) => RemindersProvider()),
       ],

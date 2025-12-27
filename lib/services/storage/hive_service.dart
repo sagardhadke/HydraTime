@@ -5,6 +5,8 @@ import 'package:hydra_time/core/errors/exceptions.dart';
 import 'package:hydra_time/core/theme/models/theme_settings_model.dart';
 import 'package:hydra_time/features/onboarding/data/models/onboarding_model.dart';
 import 'package:hydra_time/features/settings/data/models/settings_model.dart';
+import 'package:hydra_time/features/statistics/data/models/achievement_model.dart';
+import 'package:hydra_time/features/statistics/data/models/statistics_model.dart';
 import 'package:hydra_time/features/user_profile/data/models/user_profile_model.dart';
 import 'package:hydra_time/features/water_tracking/data/models/daily_log_model.dart';
 import 'package:hydra_time/features/water_tracking/data/models/water_intake_model.dart';
@@ -16,7 +18,7 @@ class HiveService {
   HiveService._internal();
 
   bool _isInitialized = false;
-
+  bool _adaptersRegistered = false;
   bool get isInitialized => _isInitialized;
 
   Future<void> init() async {
@@ -42,33 +44,55 @@ class HiveService {
   }
 
   Future<void> registerAdapters() async {
+    if (_adaptersRegistered) {
+      debugPrint('⚠️  Hive adapters already registered, skipping');
+      return;
+    }
     try {
       if (!Hive.isAdapterRegistered(7)) {
         Hive.registerAdapter(ThemeSettingsModelAdapter());
+        debugPrint('✅ ThemeSettingsModelAdapter registered');
       }
       if (!Hive.isAdapterRegistered(8)) {
         Hive.registerAdapter(OnboardingModelAdapter());
+        debugPrint('✅ OnboardingModelAdapter registered');
       }
       if (!Hive.isAdapterRegistered(9)) {
         Hive.registerAdapter(SettingsModelAdapter());
+        debugPrint('✅ SettingsModelAdapter registered');
       }
       if (!Hive.isAdapterRegistered(0)) {
         Hive.registerAdapter(UserProfileModelAdapter());
+        debugPrint('✅ UserProfileModelAdapter registered');
       }
       if (!Hive.isAdapterRegistered(1)) {
         Hive.registerAdapter(WaterIntakeModelAdapter());
+        debugPrint('✅ WaterIntakeModelAdapter registered');
       }
       if (!Hive.isAdapterRegistered(2)) {
         Hive.registerAdapter(DailyLogModelAdapter());
+        debugPrint('✅ DailyLogModelAdapter registered');
       }
 
-      debugPrint('✅ Hive adapters registered successfully');
+      if (!Hive.isAdapterRegistered(5)) {
+        Hive.registerAdapter(StatisticsModelAdapter());
+        debugPrint('✅ StatisticsModelAdapter registered');
+      }
+
+      if (!Hive.isAdapterRegistered(6)) {
+        Hive.registerAdapter(AchievementModelAdapter());
+        debugPrint('✅ AchievementModelAdapter registered');
+      }
+
+      _adaptersRegistered = true;
+      debugPrint('✅ All Hive adapters registered successfully');
     } catch (e) {
       debugPrint('❌ Adapter registration failed: $e');
-      throw StorageException(
-        message: 'Failed to register adapters: $e',
-        code: 'ADAPTER_REG_ERROR',
-      );
+      // throw StorageException(
+      //   message: 'Failed to register adapters: $e',
+      //   code: 'ADAPTER_REG_ERROR',
+      // );
+      _adaptersRegistered = true;
     }
   }
 
