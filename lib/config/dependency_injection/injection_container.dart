@@ -10,6 +10,14 @@ import 'package:hydra_time/features/onboarding/domain/usecases/complete_onboardi
 import 'package:hydra_time/features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import 'package:hydra_time/features/onboarding/domain/usecases/update_current_page.dart';
 import 'package:hydra_time/features/onboarding/presentation/providers/onboarding_provider.dart';
+import 'package:hydra_time/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:hydra_time/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:hydra_time/features/settings/domain/repositories/settings_repository.dart';
+import 'package:hydra_time/features/settings/domain/usecases/clear_all_data.dart';
+import 'package:hydra_time/features/settings/domain/usecases/export_data.dart';
+import 'package:hydra_time/features/settings/domain/usecases/get_settings.dart';
+import 'package:hydra_time/features/settings/domain/usecases/update_theme.dart';
+import 'package:hydra_time/features/settings/presentation/providers/settings_provider.dart';
 import 'package:hydra_time/features/statistics/data/datasources/statistics_local_datasource.dart';
 import 'package:hydra_time/features/statistics/data/repositories/statistics_repository_impl.dart';
 import 'package:hydra_time/features/statistics/domain/repositories/statistics_repository.dart';
@@ -119,24 +127,43 @@ Future<void> initializeDependencies() async {
     () => StatisticsLocalDataSourceImpl(hiveService: sl()),
   );
 
-  // Repositories
   sl.registerLazySingleton<StatisticsRepository>(
     () => StatisticsRepositoryImpl(localDataSource: sl()),
   );
 
-  // Use Cases
   sl.registerLazySingleton(() => GetDailyStatistics(repository: sl()));
   sl.registerLazySingleton(() => GetAchievements(repository: sl()));
   sl.registerLazySingleton(() => GetStreak(repository: sl()));
   sl.registerLazySingleton(() => GetWeeklyStats(repository: sl()));
 
-  // Provider
   sl.registerFactory(
     () => StatisticsProvider(
       getDailyStatisticsUseCase: sl(),
       getAchievementsUseCase: sl(),
       getStreakUseCase: sl(),
       getWeeklyStatsUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<SettingsLocalDataSource>(
+    () => SettingsLocalDataSourceImpl(hiveService: sl()),
+  );
+
+  sl.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(localDataSource: sl()),
+  );
+
+  sl.registerLazySingleton(() => GetSettings(repository: sl()));
+  sl.registerLazySingleton(() => UpdateTheme(repository: sl()));
+  sl.registerLazySingleton(() => ExportData(repository: sl()));
+  sl.registerLazySingleton(() => ClearAllData(repository: sl()));
+
+  sl.registerFactory(
+    () => SettingsProvider(
+      getSettingsUseCase: sl(),
+      updateThemeUseCase: sl(),
+      exportDataUseCase: sl(),
+      clearAllDataUseCase: sl(),
     ),
   );
 }
