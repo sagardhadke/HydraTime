@@ -42,6 +42,9 @@ import 'package:hydra_time/features/water_tracking/domain/usecases/get_daily_int
 import 'package:hydra_time/features/water_tracking/domain/usecases/get_intake_history.dart';
 import 'package:hydra_time/features/water_tracking/domain/usecases/remove_water_intake.dart';
 import 'package:hydra_time/features/water_tracking/presentation/providers/water_tracking_provider.dart';
+import 'package:hydra_time/services/notification/notification_handler.dart';
+import 'package:hydra_time/services/platform/permission_service.dart';
+import 'package:hydra_time/services/platform/platform_service.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
 
@@ -166,4 +169,12 @@ Future<void> initializeDependencies() async {
       clearAllDataUseCase: sl(),
     ),
   );
+
+  sl.registerLazySingleton<NotificationService>(() => NotificationService());
+
+  sl.registerLazySingleton<NotificationHandler>(() => NotificationHandler());
+
+  sl.registerLazySingleton<PlatformService>(() => PlatformService());
+
+  sl.registerLazySingleton<PermissionService>(() => PermissionService());
 }
