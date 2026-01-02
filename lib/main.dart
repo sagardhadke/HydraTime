@@ -12,6 +12,8 @@ import 'package:hydra_time/features/user_profile/presentation/providers/user_pro
 import 'package:hydra_time/features/water_tracking/presentation/providers/water_tracking_provider.dart';
 import 'package:hydra_time/provider/about_us_provider.dart';
 import 'package:hydra_time/provider/reminders_provider.dart';
+import 'package:hydra_time/services/platform/permission_service.dart';
+import 'package:hydra_time/services/platform/platform_service.dart';
 import 'package:hydra_time/services/storage/hive_service.dart';
 import 'package:hydra_time/services/storage/migration_service.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +52,14 @@ void main() async {
     final notificationService = sl<NotificationService>();
     await notificationService.initNotification();
     debugPrint('✅ Notifications initialized');
+
+    final platformService = sl<PlatformService>();
+    await platformService.logSystemInfo();
+    debugPrint('✅ System info logged');
+  
+    final permissionService = sl<PermissionService>();
+    await permissionService.requestNotificationPermission();
+    debugPrint('✅ Notification permission requested');
 
     runApp(MyApp(themeProvider: themeProvider));
   } catch (e, stackTrace) {
